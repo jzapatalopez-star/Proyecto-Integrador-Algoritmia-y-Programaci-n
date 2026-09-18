@@ -32,7 +32,7 @@ Estudiante de Ingeniería Industrial de 43 años, residente en el municipio de G
 
 ### Alejandra Zuluaga Cardona
 
-Estudiante de Ingeniería Industrial, de 23 años, reside en el municipio del Carmen de Viboral, Antioquia. Se distingue por ser una persona curiosa, perseverante y comprometida con su aprendizaje. Le interesa comprender las situaciones, analizar diferentes perspectivas y encontrar soluciones prácticas. En su formación ha desarrollado interés por el análisis y mejoramiento de procesos, la organización y la planificación, buscando asumir nuevos retos que le permitan fortalecer sus capacidades.
+Estudiante de Ingeniería Industrial, de 23 años, reside en el municipio del Carmen de Viboral. Se distingue por ser una persona curiosa, perseverante y comprometida con su aprendizaje. Le interesa comprender las situaciones, analizar diferentes perspectivas y encontrar soluciones prácticas. En su formación ha desarrollado interés por el análisis y mejoramiento de procesos, la organización y la planificación, buscando asumir nuevos retos que le permitan fortalecer sus capacidades.
 
 ## 3. Nombre del proyecto y detalles
 
