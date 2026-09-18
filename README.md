@@ -39,6 +39,7 @@ Estudiante de Ingeniería Industrial, de 23 años, reside en el municipio del Ca
 **Nombre del sistema:** SIPA (Sistema Integral de Protecciones Animales).
 
 **Descripción:** SIPA constituye una solución informática desarrollada en la plataforma Python, concebida para la sistematización y gestión organizada de las Peticiones, Quejas, Reclamos y Sugerencias (PQRS) dirigidas al cuidado de la fauna doméstica (perros y gatos) en la Universidad de Antioquia. La herramienta sustituye los esquemas de registro manuales mediante el uso de cuatro estructuras independientes de datos persistentes en archivos planos, un validador integral de campos de entrada, un módulo de generación de radicación ASCII estandarizado a 120 caracteres horizontales y un panel analítico estadístico.
+<img width="522" height="505" alt="LOGOSIPAALGORITMIA" src="https://github.com/user-attachments/assets/7963d331-1ace-40ba-bd42-42b33c6bebe3" />
 
 ## 4. Licencia del software
 
@@ -83,7 +84,8 @@ SIPA fue conceptualizado para resolver la ineficiencia operativa generada por el
 ## 7. Plan de proyecto
 
 ### Diagrama de Gantt
-<img width="1298" height="369" alt="image" src="https://github.com/user-attachments/assets/75c753c2-11ec-4761-bbc8-38741b600abc" />
+<img width="1295" height="370" alt="Diagrama de Gantt SIPA algoritmia" src="https://github.com/user-attachments/assets/41c8997a-114b-488e-ba46-f44a57aa71f1" />
 
 ### Presupuesto del proyecto
-<img width="1022" height="222" alt="image" src="https://github.com/user-attachments/assets/37e4e36a-df5c-4ac7-a451-2a712006f110" />
+<img width="1022" height="222" alt="PresupuestoproyectoSIPA" src="https://github.com/user-attachments/assets/12c03576-53e2-41fa-9fe7-cc8d7045c2cf" />
+
