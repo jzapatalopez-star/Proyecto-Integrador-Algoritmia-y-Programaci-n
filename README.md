@@ -87,5 +87,6 @@ SIPA fue conceptualizado para resolver la ineficiencia operativa generada por el
 <img width="1300" height="371" alt="DiagramadeGANTTSIPA" src="https://github.com/user-attachments/assets/bb380c7d-3adf-4379-92e8-14064d15c6b3" />
 
 ### Presupuesto del proyecto
-<img width="1022" height="222" alt="PresupuestoproyectoSIPA" src="https://github.com/user-attachments/assets/12c03576-53e2-41fa-9fe7-cc8d7045c2cf" />
+<img width="1171" height="312" alt="PresupuestoproyectoSIPAcorregido" src="https://github.com/user-attachments/assets/031c096a-d57a-4e50-82f5-b88298b7d972" />
+
 
