@@ -84,7 +84,7 @@ SIPA fue conceptualizado para resolver la ineficiencia operativa generada por el
 ## 7. Plan de proyecto
 
 ### Diagrama de Gantt
-<img width="1295" height="370" alt="Diagrama de Gantt SIPA algoritmia" src="https://github.com/user-attachments/assets/41c8997a-114b-488e-ba46-f44a57aa71f1" />
+<img width="1300" height="371" alt="image" src="https://github.com/user-attachments/assets/79e7999b-eb0b-455f-8946-ba450383f3c6" />
 
 ### Presupuesto del proyecto
 <img width="1022" height="222" alt="PresupuestoproyectoSIPA" src="https://github.com/user-attachments/assets/12c03576-53e2-41fa-9fe7-cc8d7045c2cf" />
