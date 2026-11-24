@@ -45,9 +45,9 @@ CAMPUS = [
 ESTADOS = ["Registrada", "En proceso", "Solucionada"]
 
 
-# ------------------------------------------------------------------
+
 # RF-02: Validacion de los datos del solicitante
-# ------------------------------------------------------------------
+
 def validar_nombre(nombre):
     """
     Permite verificar que el nombre ingresado por el usuario sea
@@ -126,9 +126,9 @@ def validar_direccion(direccion):
     return True
 
 
-# ------------------------------------------------------------------
+
 # RF-03: Validacion de la informacion de la PQRS
-# ------------------------------------------------------------------
+
 def validar_fecha_radicacion(texto):
     """
     Permite convertir y verificar la fecha de radicacion escrita por
@@ -169,9 +169,9 @@ def validar_descripcion(descripcion):
     return True
 
 
-# ------------------------------------------------------------------
+ 
 # RF-05: Flujo de estados
-# ------------------------------------------------------------------
+ 
 def siguiente_estado(estado_actual):
     """
     Permite identificar cual es el siguiente estado al que se puede
