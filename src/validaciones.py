@@ -45,6 +45,19 @@ CAMPUS = [
 ESTADOS = ["Registrada", "En proceso", "Solucionada"]
 
 
+# Funcion de apoyo
+
+def es_numero(texto):
+    """
+    Permite verificar que un texto tenga solo digitos y no este vacio.
+    Se usa para revisar las opciones del menu y los ID.
+    """
+    if len(texto) == 0:
+        return False
+    for caracter in texto:
+        if caracter not in DIGITOS:
+            return False
+    return True
 
 # RF-02: Validacion de los datos del solicitante
 
@@ -98,9 +111,24 @@ def validar_correo(correo):
     """
     if len(correo) > 254 or " " in correo:
         return False
-    if correo.count("@") != 1:
+
+    # Paso 1: contar los @ y guardar la posicion donde esta
+    cantidad_arrobas = 0
+    posicion_arroba = 0
+    posicion = 0
+    while posicion < len(correo):
+        if correo[posicion] == "@":
+            cantidad_arrobas = cantidad_arrobas + 1
+            posicion_arroba = posicion
+        posicion = posicion + 1
+    if cantidad_arrobas != 1:
         return False
-    usuario, dominio = correo.split("@")
+
+    # Paso 2: separar lo que va antes y despues del @
+    usuario = correo[:posicion_arroba]
+    dominio = correo[posicion_arroba + 1:]
+
+    # Paso 3: revisar el usuario y el dominio
     if usuario == "" or "." not in dominio:
         return False
     if dominio[0] == "." or dominio[-1] == ".":
@@ -131,14 +159,49 @@ def validar_direccion(direccion):
 
 def validar_fecha_radicacion(texto):
     """
-    Permite convertir y verificar la fecha de radicacion escrita por
-    el usuario en formato DD/MM/AAAA. No puede ser una fecha futura.
-    Retorna la fecha (datetime) si es valida, o None si no lo es.
+    Revisa la fecha de radicacion escrita como DD/MM/AAAA.
+
+    Retorna la fecha (datetime) si es valida y no es futura,
+    o None si no lo es.
     """
-    try:
-        fecha = datetime.strptime(texto, "%d/%m/%Y")
-    except ValueError:
+    # Paso 1: la fecha debe tener 10 caracteres, por ejemplo 05/11/2026
+    if len(texto) != 10:
         return None
+
+    # Paso 2: las barras deben estar en las posiciones 2 y 5
+    if texto[2] != "/" or texto[5] != "/":
+        return None
+
+    # Paso 3: los demas caracteres deben ser numeros
+    posicion = 0
+    while posicion < len(texto):
+        if posicion != 2 and posicion != 5:
+            if texto[posicion] not in DIGITOS:
+                return None
+        posicion = posicion + 1
+
+    # Paso 4: separar dia, mes y año y convertirlos a numeros
+    dia = int(texto[0:2])
+    mes = int(texto[3:5])
+    año = int(texto[6:10])
+
+    # Paso 5: el mes debe estar entre 1 y 12
+    if mes < 1 or mes > 12:
+        return None
+
+    # Paso 6: el dia debe existir en ese mes
+    dias_por_mes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if año % 4 == 0 and (año % 100 != 0 or año % 400 == 0):
+        dias_por_mes[1] = 29        # año bisiesto: febrero tiene 29
+    if dia < 1 or dia > dias_por_mes[mes - 1]:
+        return None
+
+    # Paso 7: el año debe ser razonable
+    if año < 1900:
+        return None
+
+    # Paso 8: crear la fecha y revisar que no sea futura
+    fecha = datetime(año, mes, dia)
     if fecha > datetime.now():
         return None
     return fecha
@@ -162,22 +225,27 @@ def validar_asunto(asunto):
 def validar_descripcion(descripcion):
     """
     Permite verificar que la descripcion ingresada por el usuario
-    sea correcta: debe contener de 20 a 2000 caracteres.
+    sea correcta: de 20 a 2000 caracteres y que no sea solo espacios.
     """
     if len(descripcion) < 20 or len(descripcion) > 2000:
         return False
-    return True
+    # Debe tener al menos un caracter que no sea espacio
+    for caracter in descripcion:
+        if caracter != " ":
+            return True
+    return False
 
 
- 
 # RF-05: Flujo de estados
- 
+
 def siguiente_estado(estado_actual):
     """
     Permite identificar cual es el siguiente estado al que se puede
     pasar. Retorna None si la PQRS ya esta Solucionada.
     """
-    posicion = ESTADOS.index(estado_actual)
-    if posicion == len(ESTADOS) - 1:
+    if estado_actual == "Registrada":
+        return "En proceso"
+    elif estado_actual == "En proceso":
+        return "Solucionada"
+    else:
         return None
-    return ESTADOS[posicion + 1]
