@@ -7,11 +7,8 @@ Peticion.txt, Queja.txt, Reclamo.txt y Sugerencia.txt.
 
 import os
 
-# Ruta de la carpeta data/ (esta al lado de la carpeta src/)
-archivo_actual = __file__                         # "src/archivos.py"
-ruta_completa = os.path.abspath(archivo_actual)
-CARPETA_SRC = os.path.dirname(ruta_completa)
-CARPETA_DATA = os.path.join(os.path.dirname(CARPETA_SRC), "data")
+# Carpeta donde se guardan los archivos planos
+CARPETA_DATA = "data"
 
 # Archivo donde se guarda cada tipo de solicitud
 ARCHIVOS = {
@@ -37,24 +34,60 @@ def ruta_archivo(tipo_solicitud):
     return os.path.join(CARPETA_DATA, ARCHIVOS[tipo_solicitud])
 
 
-def registro_a_linea(registro):
+def crear_archivos():
     """
-    Convierte una PQRS (diccionario) en una linea de texto.
+    Crea los 4 archivos de PQRS si todavia no existen.
 
-    Separa los datos con | y cambia los | y saltos de linea que
-    escriba el usuario, para no dañar el archivo.
+    Python lo crea si no existe y,
+    si ya existe, no borra lo que tiene.
     """
+    for tipo in ARCHIVOS:
+        with open(ruta_archivo(tipo), "a") as archivo_txt:
+            archivo_txt.write("")
+
+
+def limpiar_texto(texto):
+    """
+    Cambia los | que escriba el usuario por /, para que no se
+    confundan con el separador del archivo.
+    """
+    nuevo = ""
+    for caracter in texto:
+        if caracter == "|":
+            nuevo = nuevo + "/"
+        else:
+            nuevo = nuevo + caracter
+    return nuevo
+
+
+def registro_a_linea(registro):
+    """Convierte una PQRS (diccionario) en una linea separada por |."""
+    linea = ""
+    for i in range(len(CAMPOS)):
+        valor = limpiar_texto(str(registro[CAMPOS[i]]))
+        if i > 0:
+            linea = linea + "|"     
+        linea = linea + valor
+    return linea + "\n"
+
+
+def separar_linea(linea):
+    """Separa una linea del archivo en una lista de datos usando |."""
     valores = []
-    for campo in CAMPOS:
-        valor = str(registro[campo])
-        valor = valor.replace("|", "/").replace("\n", " ")
-        valores.append(valor)
-    return "|".join(valores) + "\n"
+    dato = ""
+    for caracter in linea:
+        if caracter == "|":
+            valores.append(dato)
+            dato = ""
+        else:
+            dato = dato + caracter
+    valores.append(dato)            
+    return valores
 
 
 def linea_a_registro(linea):
     """Convierte una linea del archivo en una PQRS (diccionario)."""
-    valores = linea[:-1].split("|")   # [:-1] quita el salto final
+    valores = separar_linea(linea[:-1])     # [:-1] quita el salto final
     registro = {}
     for i in range(len(CAMPOS)):
         registro[CAMPOS[i]] = valores[i]
@@ -63,22 +96,13 @@ def linea_a_registro(linea):
 
 
 def leer_registros(tipo_solicitud):
-    """
-    Lee todas las PQRS de un archivo.
-
-    Retorna una lista de diccionarios, o una lista vacia si el
-    archivo no existe.
-    """
-    ruta = ruta_archivo(tipo_solicitud)
+    """Lee todas las PQRS de un archivo y las retorna en una lista."""
     registros = []
-    if os.path.exists(ruta):
-        with open(ruta, "r") as archivo_txt:
-            for linea in archivo_txt:
-                if linea != "\n":
-                    registros.append(linea_a_registro(linea))
-        return registros
-    else:
-        return registros
+    with open(ruta_archivo(tipo_solicitud), "r") as archivo_txt:
+        for linea in archivo_txt:
+            if linea != "\n":
+                registros.append(linea_a_registro(linea))
+    return registros
 
 
 def leer_todos():
@@ -94,7 +118,7 @@ def siguiente_id(tipo_solicitud):
     """
     Calcula el siguiente ID de un archivo (RF-01).
 
-    Retorna el ID mayor mas uno.
+    Retorna el ID mayor mas uno, o 1 si el archivo esta vacio.
     """
     mayor = 0
     for registro in leer_registros(tipo_solicitud):
@@ -105,7 +129,6 @@ def siguiente_id(tipo_solicitud):
 
 def guardar_registro(registro):
     """Agrega una PQRS nueva al final de su archivo."""
-    os.makedirs(CARPETA_DATA, exist_ok=True)
     ruta = ruta_archivo(registro["tipo_solicitud"])
     with open(ruta, "a") as archivo_txt:
         archivo_txt.write(registro_a_linea(registro))
@@ -145,8 +168,7 @@ def exportar_texto(nombre_archivo, contenido):
 
     Retorna la ruta donde quedo guardado el archivo.
     """
-    os.makedirs(CARPETA_DATA, exist_ok=True)
     ruta = os.path.join(CARPETA_DATA, nombre_archivo)
     with open(ruta, "w") as archivo_txt:
         archivo_txt.write(contenido)
-    return ruta
+    return rut
