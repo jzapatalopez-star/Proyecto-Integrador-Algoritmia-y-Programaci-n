@@ -46,7 +46,6 @@ ESTADOS = ["Registrada", "En proceso", "Solucionada"]
 
 
 # Funcion de apoyo
-
 def es_numero(texto):
     """
     Permite verificar que un texto tenga solo digitos y no este vacio.
@@ -59,8 +58,8 @@ def es_numero(texto):
             return False
     return True
 
-# RF-02: Validacion de los datos del solicitante
 
+# RF-02: Validacion de los datos del solicitante
 def validar_nombre(nombre):
     """
     Permite verificar que el nombre ingresado por el usuario sea
@@ -153,9 +152,42 @@ def validar_direccion(direccion):
             return False
     return True
 
+          
+# Funciones de fechas
+def dias_del_mes(mes, año):
+    """Retorna cuantos dias tiene un mes en un año determinado."""
+    dias_por_mes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if año % 4 == 0 and (año % 100 != 0 or año % 400 == 0):
+        dias_por_mes[1] = 29        # año bisiesto: febrero tiene 29
+    return dias_por_mes[mes - 1]
 
+
+def sumar_dias(fecha, cantidad):
+    """
+    Retorna la fecha que resulta de sumarle una cantidad de dias.
+
+    Avanza dia por dia; conserva la hora y los minutos.
+    """
+    dia = fecha.day
+    mes = fecha.month
+    año = fecha.year
+    contador = 0
+    while contador < cantidad:
+        dia = dia + 1
+        # Si se pasa del ultimo dia del mes, empieza el mes siguiente
+        if dia > dias_del_mes(mes, año):
+            dia = 1
+            mes = mes + 1
+            # Si el mes se pasa de diciembre, empieza el año siguiente
+            if mes > 12:
+                mes = 1
+                año = año + 1
+        contador = contador + 1
+    nueva_fecha = datetime(año, mes, dia, fecha.hour, fecha.minute)
+    return nueva_fecha
 
 # RF-03: Validacion de la informacion de la PQRS
+
 
 def validar_fecha_radicacion(texto):
     """
@@ -164,15 +196,15 @@ def validar_fecha_radicacion(texto):
     Retorna la fecha (datetime) si es valida y no es futura,
     o None si no lo es.
     """
-    # Paso 1: la fecha debe tener 10 caracteres, por ejemplo 05/11/2026
+    # 1: la fecha debe tener 10 caracteres, por ejemplo 05/11/2026
     if len(texto) != 10:
         return None
 
-    # Paso 2: las barras deben estar en las posiciones 2 y 5
+    # 2: las barras deben estar en las posiciones 2 y 5
     if texto[2] != "/" or texto[5] != "/":
         return None
 
-    # Paso 3: los demas caracteres deben ser numeros
+    # 3: los demas caracteres deben ser numeros
     posicion = 0
     while posicion < len(texto):
         if posicion != 2 and posicion != 5:
@@ -180,27 +212,24 @@ def validar_fecha_radicacion(texto):
                 return None
         posicion = posicion + 1
 
-    # Paso 4: separar dia, mes y año y convertirlos a numeros
+    # 4: separar dia, mes y año y convertirlos a numeros
     dia = int(texto[0:2])
     mes = int(texto[3:5])
     año = int(texto[6:10])
 
-    # Paso 5: el mes debe estar entre 1 y 12
+    # 5: el mes debe estar entre 1 y 12
     if mes < 1 or mes > 12:
         return None
 
-    # Paso 6: el dia debe existir en ese mes
-    dias_por_mes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    if año % 4 == 0 and (año % 100 != 0 or año % 400 == 0):
-        dias_por_mes[1] = 29        # año bisiesto: febrero tiene 29
-    if dia < 1 or dia > dias_por_mes[mes - 1]:
+    # 6: el dia debe existir en ese mes
+    if dia < 1 or dia > dias_del_mes(mes, año):
         return None
 
-    # Paso 7: el año debe ser razonable
+    # 7: el año debe ser razonable
     if año < 1900:
         return None
 
-    # Paso 8: crear la fecha y revisar que no sea futura
+    # 8: crear la fecha y revisar que no sea futura
     fecha = datetime(año, mes, dia)
     if fecha > datetime.now():
         return None
@@ -237,7 +266,6 @@ def validar_descripcion(descripcion):
 
 
 # RF-05: Flujo de estados
-
 def siguiente_estado(estado_actual):
     """
     Permite identificar cual es el siguiente estado al que se puede
