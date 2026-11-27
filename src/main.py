@@ -1,8 +1,10 @@
-"""Programa principal de SIPA, gestor de PQRS
+"""
+Programa principal de SIPA, gestor de PQRS.
 
 Muestra el menu y usa los modulos validaciones, archivos, radicado
 y reportes.
 """
+
 from datetime import datetime
 
 import validaciones as v
@@ -31,7 +33,7 @@ def pedir_opcion(titulo, opciones):
             numero = int(eleccion)
             if numero >= 1 and numero <= len(opciones):
                 return opciones[numero - 1]
-        print("  Opción inválida, escriba un número de la lista.")
+        print("  Opción inválida. Escriba un número de la lista.")
 
 
 def mostrar_y_guardar_radicado(registro):
@@ -50,12 +52,12 @@ def registrar_pqrs():
     print(">> Datos del solicitante")
 
     while True:
-        nombre = input("Nombre completo: ")
+        nombre = input("Escriba su nombre completo: ")
         if v.validar_nombre(nombre):
             break
-        print("Información ingresada inválida. Solo letras, espacios, ' o - (3 a 100 caracteres).")
+        print("  Dato inválido. Solo letras, espacios, ' o - (3 a 100).")
 
-    # Lista con los nombres de los documentos, (las claves del diccionario)
+    # Lista con los nombres de los documentos (las claves del diccionario)
     nombres_documento = []
     for nombre_documento in v.TIPOS_DOCUMENTO:
         nombres_documento.append(nombre_documento)
@@ -63,10 +65,10 @@ def registrar_pqrs():
     sigla_documento = v.TIPOS_DOCUMENTO[documento_elegido]
 
     while True:
-        numero_documento = input("Número de documento: ")
+        numero_documento = input("Escriba su número de documento: ")
         if v.validar_numero_documento(numero_documento):
             break
-        print("  Información ingresada inválida. Solo números, entre 3 y 15 dígitos.")
+        print("  Dato inválido. Solo números, entre 3 y 15 dígitos.")
 
     tipo_telefono = pedir_opcion("Tipo de teléfono:", v.TIPOS_TELEFONO)
 
@@ -74,19 +76,20 @@ def registrar_pqrs():
         telefono = input("Teléfono de contacto: ")
         if v.validar_telefono(telefono):
             break
-        print("Información ingresada inválida. Debe tener exactamente 10 dígitos.")
+        print("  Dato inválido. Debe tener exactamente 10 dígitos.")
 
     while True:
         correo = input("Correo electrónico: ")
         if v.validar_correo(correo):
             break
-        print("   Formato esperado: usuario@dominio.com")
+        print("  Dato inválido. Formato esperado: usuario@dominio.com")
 
     while True:
         direccion = input("Dirección (opcional, Enter para omitir): ")
         if v.validar_direccion(direccion):
             break
-        print("Información ingresada inválida. Debe tener de 5 a 200 caracteres; letras, números y # - . /")
+        print("  Dato inválido. De 5 a 200 caracteres; letras, números "
+              "y # - . /")
 
     print("\n>> Información de la PQRS")
     tipo_solicitud = pedir_opcion("Tipo de solicitud:", v.TIPOS_SOLICITUD)
@@ -99,7 +102,7 @@ def registrar_pqrs():
         fecha_radicacion = v.validar_fecha_radicacion(texto)
         if fecha_radicacion is not None:
             break
-        print( "Fecha inválida o futura.")
+        print("  Dato inválido. Fecha incorrecta o futura.")
 
     canal = pedir_opcion("Canal de recepción:", v.CANALES)
 
@@ -107,13 +110,14 @@ def registrar_pqrs():
         asunto = input("Asunto o título: ")
         if v.validar_asunto(asunto):
             break
-        print("Información ingresada inválida. Debe tener entre 5 a 150 caracteres; letras, números y puntuación.")
+        print("  Dato inválido. De 5 a 150 caracteres; letras, números "
+              "y puntuación.")
 
     while True:
         descripcion = input("Descripción detallada: ")
         if v.validar_descripcion(descripcion):
             break
-        print(" Información ingresada inválida. Debe tener mínimo 20 y máximo 2000 caracteres.")
+        print("  Dato inválido. Mínimo 20 y máximo 2000 caracteres.")
 
     print("\n>> Información relacionada")
     mascota = pedir_opcion("Tipo de mascota:", v.MASCOTAS)
@@ -146,7 +150,7 @@ def registrar_pqrs():
     }
     archivos.guardar_registro(registro)
     mostrar_y_guardar_radicado(registro)
-    print("\n PQRS registrada correctamente.")
+    print("\nPQRS registrada correctamente.")
 
 
 # Opcion 2: Consultar PQRS
@@ -159,11 +163,11 @@ def elegir_pqrs():
     tipo = pedir_opcion("Tipo de solicitud a buscar:", v.TIPOS_SOLICITUD)
     texto_id = input("ID del registro: ")
     if not v.es_numero(texto_id):
-        print(" Información ingresada inválida. El ID debe ser un número.")
+        print("  Dato inválido. El ID debe ser un número.")
         return None
     registro = archivos.buscar_registro(tipo, int(texto_id))
     if registro is None:
-        print(" Información ingresada inválida. No existe una " + tipo + " con ese ID.")
+        print("  No existe una " + tipo + " con ese ID.")
     return registro
 
 
@@ -227,7 +231,7 @@ def cambiar_estado():
         ahora = datetime.now()
         registro["fecha_solucion"] = ahora.strftime(FORMATO_FECHA_HORA)
     archivos.actualizar_registro(registro)
-    print(" Estado actualizado a " + nuevo)
+    print("Estado actualizado a " + nuevo)
 
 
 # Opcion 4: Estadisticas
@@ -236,7 +240,7 @@ def ver_estadisticas():
     texto = reportes.generar_reporte()
     print("\n" + texto)
     ruta = archivos.exportar_texto("reporte_estadisticas.txt", texto)
-    print("\n Reporte exportado en: " + ruta)
+    print("\nReporte exportado en: " + ruta)
 
 
 # Menu principal
