@@ -85,7 +85,7 @@ def registrar_pqrs():
         print("  Dato inválido. Formato esperado: usuario@dominio.com")
 
     while True:
-        direccion = input("Dirección (opcional, Enter para omitir): ")
+        direccion = input("Escriba su dirección (opcional, o Enter para omitir): ")
         if v.validar_direccion(direccion):
             break
         print("  Dato inválido. De 5 a 200 caracteres; letras, números "
@@ -95,7 +95,7 @@ def registrar_pqrs():
     tipo_solicitud = pedir_opcion("Tipo de solicitud:", v.TIPOS_SOLICITUD)
 
     while True:
-        texto = input("Fecha de radicación (DD/MM/AAAA, Enter = hoy): ")
+        texto = input("Escriba la fecha de radicación (DD/MM/AAAA, o presione enter = hoy): ")
         if texto == "":
             fecha_radicacion = datetime.now()
             break
@@ -107,14 +107,14 @@ def registrar_pqrs():
     canal = pedir_opcion("Canal de recepción:", v.CANALES)
 
     while True:
-        asunto = input("Asunto o título: ")
+        asunto = input("Escriba el asunto o título: ")
         if v.validar_asunto(asunto):
             break
         print("  Dato inválido. De 5 a 150 caracteres; letras, números "
               "y puntuación.")
 
     while True:
-        descripcion = input("Descripción detallada: ")
+        descripcion = input("Escriba la descripción detallada: ")
         if v.validar_descripcion(descripcion):
             break
         print("  Dato inválido. Mínimo 20 y máximo 2000 caracteres.")
