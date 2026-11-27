@@ -171,4 +171,4 @@ def exportar_texto(nombre_archivo, contenido):
     ruta = os.path.join(CARPETA_DATA, nombre_archivo)
     with open(ruta, "w") as archivo_txt:
         archivo_txt.write(contenido)
-    return rut
+    return ruta
