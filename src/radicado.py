@@ -47,10 +47,20 @@ def linea_centrada(texto):
 def linea_campo(etiqueta, valor):
     """Crea una linea 'Etiqueta.....: valor' alineada a la izquierda."""
     puntos = repetir(".", 30 - len(etiqueta))
-    texto = "  " + etiqueta + puntos + ": " + str(valor)
-    texto = texto[:INTERIOR]
-    relleno = repetir(" ", INTERIOR - len(texto))
-    return "|" + texto + relleno + "|"
+    inicio = "  " + etiqueta + puntos + ": "
+    espacio = INTERIOR - len(inicio) - 1
+    valor = str(valor)
+    texto = ""
+    posicion = 0
+    while True:
+        renglon = inicio + valor[posicion:posicion + espacio]
+        relleno = repetir(" ", INTERIOR - len(renglon))
+        texto = texto + "|" + renglon + relleno + "|"
+        posicion = posicion + espacio
+        if posicion >= len(valor):
+            return texto
+        texto = texto + "\n"
+        inicio = repetir(" ", len(inicio))
 
 
 def numero_radicado(registro):
