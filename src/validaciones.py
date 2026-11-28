@@ -69,9 +69,14 @@ def validar_nombre(nombre):
     if len(nombre) < 3 or len(nombre) > 100:
         return False
     permitidos = LETRAS + " '-"
+    cantidad_letras = 0
     for letra in nombre:
         if letra not in permitidos:
             return False
+        if letra in LETRAS:
+            cantidad_letras = cantidad_letras + 1
+    if cantidad_letras == 0:
+        return False
     return True
 
 
@@ -108,8 +113,12 @@ def validar_correo(correo):
     texto antes del @ y un punto dentro del dominio que no este
     ni al inicio ni al final.
     """
-    if len(correo) > 254 or " " in correo:
+    if len(correo) > 254 or " " in correo or ".." in correo:
         return False
+    permitidos = LETRAS + DIGITOS + "._-+@"
+    for caracter in correo:
+        if caracter not in permitidos:
+            return False
 
     # Paso 1: contar los @ y guardar la posicion donde esta
     cantidad_arrobas = 0
@@ -130,6 +139,8 @@ def validar_correo(correo):
     # Paso 3: revisar el usuario y el dominio
     if usuario == "" or "." not in dominio:
         return False
+    if usuario[0] == "." or usuario[-1] == ".":
+        return False
     if dominio[0] == "." or dominio[-1] == ".":
         return False
     return True
@@ -147,9 +158,14 @@ def validar_direccion(direccion):
     if len(direccion) < 5 or len(direccion) > 200:
         return False
     permitidos = LETRAS + DIGITOS + " #-./,"
+    cantidad_letras_numeros = 0
     for caracter in direccion:
         if caracter not in permitidos:
             return False
+        if caracter in LETRAS or caracter in DIGITOS:
+            cantidad_letras_numeros = cantidad_letras_numeros + 1
+    if cantidad_letras_numeros == 0:
+        return False
     return True
 
           
@@ -245,9 +261,14 @@ def validar_asunto(asunto):
     if len(asunto) < 5 or len(asunto) > 150:
         return False
     permitidos = LETRAS + DIGITOS + SIGNOS_PUNTUACION + " "
+    cantidad_letras_numeros = 0
     for caracter in asunto:
         if caracter not in permitidos:
             return False
+        if caracter in LETRAS or caracter in DIGITOS:
+            cantidad_letras_numeros = cantidad_letras_numeros + 1
+    if cantidad_letras_numeros == 0:
+        return False
     return True
 
 
@@ -260,7 +281,7 @@ def validar_descripcion(descripcion):
         return False
     # Debe tener al menos un caracter que no sea espacio
     for caracter in descripcion:
-        if caracter != " ":
+        if caracter != " " and caracter != "\t":
             return True
     return False
 
